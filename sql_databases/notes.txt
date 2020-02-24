@@ -1,0 +1,5 @@
+This folder will hold relevent data at project finalization. 
+
+Part of finalization proceedure will be to update calls to database filepaths to this directory.
+
+
