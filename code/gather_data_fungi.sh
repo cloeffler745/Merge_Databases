@@ -13,13 +13,13 @@ search_term=$(echo "$search_term_cl" | sed "s/^/|/g" | sed "s/$/|/g")
 mkdir -p "$search_term_cl" 
 cd "$search_term_cl"
 
-
+#DIR_NAME=$(cd `dirname $0` && pwd)
 
 # Search our metadata file (made from our sql database of references) for the desired values.
 
 # for reference, right now 1 is the filepath
 
-grep -i "$search_term" ../our_sql_metadata_fungi.txt | awk -F "|" 'BEGIN{OFS=",";} {print $1;}' > first_step.txt
+grep -i "$search_term" /u/home/c/cloeffle/scratch/merge/Merge_Databases/code/our_sql_metadata_fungi.txt | awk -F "|" 'BEGIN{OFS=",";} {print $1;}' > first_step.txt
 
 mkdir -p JGI
 mkdir -p REFSEQ
