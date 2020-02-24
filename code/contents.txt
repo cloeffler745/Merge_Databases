@@ -1,0 +1,23 @@
+create_metadata_files.py  
+- creates two text files of metadata generated from our sql databases. one for fungi and one for bacteria. 
+- future work should have the taxid and name liniage information included so that we may combine the fungi and bacteria metadata files into one file.
+
+get_consensus_stats.py     
+- This code collects and prints count and average lengths of reads. Useful for debugging and learning to work with the assembly tools.
+
+
+our_sql_metadata_fungi.txt
+-fungal metadata in text form from our sql databases
+
+gather_data_fungi.sh
+- this code is used to gather the genomic reference files for a given taxid (taxid must be provided as one of the inputs when the code is called on the command line) 
+- future work should make this code no longer require user input
+- " should also make use of the first_step.txt file generated and not copy over the entire reference file 
+- this code requires "create_metadata_files.py" to have already been run.
+
+our_sql_metadata_bact.txt  
+- bacterial metadata in text form from our sql databases
+
+run_assembly_tool.sh
+- runs the wtdgb2 assembly tool
+- future work on this code will make it reference first_step.txt file instead of getting databases
