@@ -21,3 +21,7 @@ our_sql_metadata_bact.txt
 run_assembly_tool.sh
 - runs the wtdgb2 assembly tool
 - future work on this code will make it reference first_step.txt file instead of getting databases
+
+collect_reads.sh
+- This creates a catinated file of all the references used as input reads for the assembler. Currently only works for fungi. 
+- As it catinates them into one file, it edits the '>' lines by inserting dbname and filename (seperated by commas). This butts up against whatever was first in the line, which gets printed with the added metadata in the query template name column of the CIGAR bwa mem samtools output column ($1). 
