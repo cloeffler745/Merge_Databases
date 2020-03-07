@@ -4,9 +4,9 @@
 
 module load samtools
 module load bwa
-module load minimap2
+#module load minimap2
 
-/u/home/c/cloeffle/scratch/merge/wtdbg2/wtdbg2 -x rs -g 17755462 -i all_reads.fa.gz -t 16 -fo assembly
+/u/home/c/cloeffle/scratch/merge/wtdbg2/wtdbg2 -x rs -g 43745225 -i all_reads.fa.gz -t 16 -fo assembly
 
 /u/home/c/cloeffle/scratch/merge/wtdbg2/wtpoa-cns -t 16 -i assembly.ctg.lay.gz -fo assembly.raw.fa 
 
