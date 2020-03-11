@@ -1,9 +1,9 @@
 #!/bin/env python
 
 import re
+import gzip
 
-
-with open("four_triple_nine.raw.fa") as f:
+with gzip.open("master_ref.fa.gz") as f:
 	contig_lengths = []
 	num_contigs = 0
 	min_length = 0
