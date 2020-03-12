@@ -25,3 +25,7 @@ run_assembly_tool.sh
 collect_reads.sh
 - This creates a catinated file of all the references used as input reads for the assembler. Currently only works for fungi. 
 - As it catinates them into one file, it edits the '>' lines by inserting dbname and filename (seperated by commas). This butts up against whatever was first in the line, which gets printed with the added metadata in the query template name column of the CIGAR bwa mem samtools output column ($1). 
+
+next_steps.sh (file now in code_run_in_reference_directory, the only other folder here) 
+- Holding the extra code that has to come before, change_headers_for_hold.sh
+- collects unassembled reads into one fasta file, this file is then put into MUSCLE and run through clustalo to get the percent identity matrix, which is stored in pim.txt
