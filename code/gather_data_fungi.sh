@@ -21,26 +21,31 @@ cd "$search_term_cl"
 
 grep -i "$search_term" /u/home/c/cloeffle/scratch/merge/Merge_Databases/code/our_sql_metadata_fungi.txt | awk -F "|" 'BEGIN{OFS=",";} {print $1;}' > first_step.txt
 
-mkdir -p JGI
-mkdir -p REFSEQ
-mkdir -p ENSEMBL
-mkdir -p FUNGIDB
+
 
 while IFS="" read -r file_path; do
 	dbase=$(echo "$file_path" | awk -F '/' '{print $8}')
 	if [ "$dbase" == "JGI" ]
 	then
-		cp $file_path ./JGI/.
+		do_this='s/^>/>JGI,'"$i"',/g'
+		do_this=$(echo "$do_this" | sed 's/,JGI\//,/g')
+		zcat $file_path | sed $do_this >> all_reads.fa.gz
 	elif [ "$dbase" == "NCBI" ]
 	then
-		cp $file_path ./REFSEQ/.
+		do_this='s/^>/>REFSEQ,'"$i"',/g'
+		do_this=$(echo "$do_this" | sed 's/,REFSEQ\//,/g')
+		zcat $file_path | sed $do_this >> all_reads.fa.gz
 	elif [ "$dbase" == "ensembl" ]
 	then
-		cp $file_path ./ENSEMBL/.
+		do_this='s/^>/>ENSEMBL,'"$i"',/g'
+		do_this=$(echo "$do_this" | sed 's/,ENSEMBL\//,/g')
+		zcat $file_path | sed $do_this >> all_reads.fa.gz
 	else
+		do_this='s/^>/>FUNGIDB,'"$i"',/g'
+		do_this=$(echo "$do_this" | sed 's/,FUNGIDB\//,/g')
+		zcat $file_path | sed $do_this >> all_reads.fa.gz
 		cp $filepath ./FUNGIDB/.
 	fi
 done < first_step.txt
-
 
 
