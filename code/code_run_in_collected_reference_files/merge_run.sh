@@ -7,7 +7,7 @@
 module load bwa
 bwa index assembly.raw.fa
 module load samtools
-bwa mem assembly.raw.fa all_reads.fa.gz  > aln.sam
+bwa mem assembly.raw.fa all_reads.fa  > aln.sam
 
 samtools view aln.sam | awk '{print $1,$2,$3}' > important_data_from_aln_file.txt
 
@@ -19,23 +19,17 @@ samtools view aln.sam | grep -P "\t4\t\*" | awk -F '\t' '{print $1}' > get_these
 
 number=0
 
-:> hold1.fa
+
+:> hold.fa
 
 xargs samtools faidx all_reads.fa < get_these.txt | while read -r line; do 
         if $(echo $line | grep -q ">")
         then
-                printf '%s%i\n' ">Read" "$(( ++number ))" >> hold1.fa
+                printf '%s%i\n' ">Read" "$(( ++number ))" >> hold.fa
         else
-                echo $line >> hold1.fa
+                echo $line >> hold.fa
         fi
-done 
-
-
-awk '/^>/ { if (name) {printf("%s len=%d\n%s", name, len, seq)} name=$0; seq=""; len = 0; next}
-    NF > 0 {seq = seq $0 "\n"; len += length()}
-    END { if (name) {printf("%s len=%d\n%s", name, len, seq)} }' hold1.fa > hold.fa
-
-rm hold1.fa
+done
 
 
 /u/home/c/cloeffle/project/anaconda2/bin/ete3_apps/bin/muscle -in hold.fa -clwstrictout aligned.clw  # run multiple sequence alignment on the unaligned seq
@@ -43,12 +37,19 @@ rm hold1.fa
 
 ../find_uniq_of_unaln.py # find unique reads that were not alinged , puts terms in "unaln_uniq.txt"
 
-xargs samtools faidx all_reads.fa < unaln_uniq.txt > hold.fa # change unalinged reads so that it only holds unique references (remove duplicates)
+xargs samtools faidx hold.fa < unaln_uniq.txt > hold1.fa # change unalinged reads so that it only holds unique references (remove duplicates)
 
+rm hold.fa
+
+awk '/^>/ { if (name) {printf("%s len=%d\n%s", name, len, seq)} name=$0; seq=""; len = 0; next}
+    NF > 0 {seq = seq $0 "\n"; len += length()}
+    END { if (name) {printf("%s len=%d\n%s", name, len, seq)} }' hold1.fa > unassembled_reads.fa
+
+rm hold1.fa
 
 # combine the raw files and the extra bits into one file
 
-cat assembly.raw.fa hold.fa > master_ref.fa
+cat assembly.raw.fa unassembled_reads.fa > master_ref.fa
 
 gzip master_ref.fa
 
