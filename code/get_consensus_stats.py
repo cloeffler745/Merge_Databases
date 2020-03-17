@@ -14,7 +14,7 @@ with gzip.open("master_ref.fa.gz") as f:
 		if re.findall(r">", line):
 			num_contigs +=1
 			contig_lengths.append(re.findall(r"\d+", line)[1])
-	print(num_contigs, contig_lengths)
+#	print(num_contigs, contig_lengths)
 	if len(contig_lengths) >= 1:
 		contig_lengths.sort()
 		min_length = contig_lengths[0]
@@ -22,4 +22,4 @@ with gzip.open("master_ref.fa.gz") as f:
 		for lengths in contig_lengths:
 			sum_contig_lengths += int(lengths)
 		avg_length = sum_contig_lengths / num_contigs
-	print(avg_length, min_length, max_length)
+	print(num_contigs, avg_length)

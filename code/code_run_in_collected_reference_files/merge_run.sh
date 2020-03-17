@@ -39,18 +39,23 @@ done
 
 xargs samtools faidx hold.fa < unaln_uniq.txt > hold1.fa # change unalinged reads so that it only holds unique references (remove duplicates)
 
-rm hold.fa
 
 awk '/^>/ { if (name) {printf("%s len=%d\n%s", name, len, seq)} name=$0; seq=""; len = 0; next}
     NF > 0 {seq = seq $0 "\n"; len += length()}
     END { if (name) {printf("%s len=%d\n%s", name, len, seq)} }' hold1.fa > unassembled_reads.fa
 
-rm hold1.fa
 
 # combine the raw files and the extra bits into one file
 
 cat assembly.raw.fa unassembled_reads.fa > master_ref.fa
 
 gzip master_ref.fa
+
+#rm hold.fa
+#rm hold1.fa
+
+:> master_stats.txt 
+echo "#contig_count, avg_length_contigs" >> master_stats.txt
+/u/home/c/cloeffle/scratch/merge/Merge_Databases/code/get_consensus_stats.py >> master_stats.txt
 
 echo "Done!"
